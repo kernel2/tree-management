@@ -21,8 +21,9 @@ public class TreeManagementApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        jsonLoaderService.loadTreesFromJson("/Users/kernel/IdeaProjects/tree-management/src/main/resources/migration/les-arbres.json");
+    public void run(String... args) {
+        String url = "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/les-arbres/exports/json?lang=fr&timezone=Europe%2FBerlin";
+        jsonLoaderService.loadTreesFromJsonUrl(url);
     }
 
 }

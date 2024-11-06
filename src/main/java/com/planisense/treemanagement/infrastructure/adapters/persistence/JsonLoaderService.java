@@ -4,14 +4,17 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.planisense.treemanagement.domain.exceptions.JsonParsingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 @Service
+@EnableAsync
 public class JsonLoaderService {
 
     private final TreeJpaRepository treeJpaRepository;
@@ -23,14 +26,15 @@ public class JsonLoaderService {
         this.objectMapper = objectMapper;
     }
 
+    @Async
     @Transactional
-    public void loadTreesFromJson(String filePath) {
+    public void loadTreesFromJsonUrl(String url) {
         try {
-            List<TreeEntity> trees = objectMapper.readValue(new File(filePath), new TypeReference<List<TreeEntity>>() {
+            List<TreeEntity> trees = objectMapper.readValue(new URL(url), new TypeReference<List<TreeEntity>>() {
             });
             treeJpaRepository.saveAll(trees);
         } catch (IOException e) {
-            throw new JsonParsingException("Erreur de lecture du fichier JSON", e);
+            throw new JsonParsingException("Erreur de lecture du fichier JSON à partir de l'URL : " + url, e);
         }
     }
 }
