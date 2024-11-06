@@ -34,3 +34,4 @@ build/
 
 
 !**/src/main/resources/migration/les-arbres.json
+src/main/resources/migration/les-arbres.json
