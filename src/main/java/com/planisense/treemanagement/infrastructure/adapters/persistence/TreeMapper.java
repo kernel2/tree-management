@@ -51,7 +51,6 @@ public interface TreeMapper {
         return dto;
     }
 
-    // Map from TreeEntity to Tree domain model, handling GeoPointEntity mapping
     default Tree toDomainModel(TreeEntity entity) {
         if (entity == null) {
             return null;
@@ -82,7 +81,7 @@ public interface TreeMapper {
                 entity.getHauteurM(),
                 entity.getStadeDeveloppement(),
                 entity.getRemarquable(),
-                geoPoint  // Map the GeoPoint here
+                geoPoint
         );
     }
 
