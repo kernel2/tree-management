@@ -42,6 +42,7 @@ public class TreeRepositoryAdapter implements TreeRepositoryPort {
         List<TreeEntity> allTrees = treeJpaRepository.getTreesGroupedByArrondissement(arrondissement);
 
         Map<String, List<Tree>> treesByArrondissement = allTrees.stream()
+                .filter(treeEntity -> treeEntity.getArrondissement() != null)  // Filter out null arrondissement values
                 .collect(Collectors.groupingBy(
                         TreeEntity::getArrondissement,
                         Collectors.mapping(treeMapper::toDomainModel, Collectors.toList())
