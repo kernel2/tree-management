@@ -1,10 +1,14 @@
 package com.planisense.treemanagement.domain.ports;
 
 
-import com.planisense.treemanagement.domain.model.Tree;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.planisense.treemanagement.domain.model.*;
+
+import java.util.List;
 
 public interface TreeRepositoryPort {
-    Page<Tree> findAllPaginated(Pageable pageable);
+    PaginatedResult<Tree> findAllPaginated(PaginationRequest paginationRequest);
+
+    List<ArrondissementTreeCount> getTreesGroupedByArrondissement(String arrondissement);
+
+    List<GenreTreeCount> findGenreTreeCounts(String genre);
 }

@@ -1,9 +1,9 @@
 package com.planisense.treemanagement.domain.services;
 
-import com.planisense.treemanagement.domain.model.Tree;
+import com.planisense.treemanagement.domain.model.*;
 import com.planisense.treemanagement.domain.ports.TreeRepositoryPort;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public class TreeServiceImpl {
 
@@ -13,7 +13,15 @@ public class TreeServiceImpl {
         this.treeRepositoryPort = treeRepositoryPort;
     }
 
-    public Page<Tree> findAllPaginated(Pageable pageable) {
-        return treeRepositoryPort.findAllPaginated(pageable);
+    public PaginatedResult<Tree> findAllPaginated(PaginationRequest paginationRequest) {
+        return treeRepositoryPort.findAllPaginated(paginationRequest);
+    }
+
+    public List<ArrondissementTreeCount> findArrondissementTreeCounts(String arrondissement) {
+        return treeRepositoryPort.getTreesGroupedByArrondissement(arrondissement);
+    }
+
+    public List<GenreTreeCount> findGenreTreeCounts(String genre) {
+        return treeRepositoryPort.findGenreTreeCounts(genre);
     }
 }

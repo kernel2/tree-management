@@ -8,9 +8,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Mapper(
         componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -42,7 +39,7 @@ public interface TreeMapper {
         dto.setRemarquable(tree.remarquable() != null ? (tree.remarquable() ? "OUI" : "NON") : null);
 
         if (tree.geoPoint2d() != null) {
-            GeoPointDTO geoPointDTO = new GeoPointDTO();
+            GeoPointDTO geoPointDTO = new GeoPointDTO(0D, 0D);
             geoPointDTO.setLon(tree.geoPoint2d().longitude());
             geoPointDTO.setLat(tree.geoPoint2d().latitude());
             dto.setGeoPoint2d(geoPointDTO);
@@ -51,7 +48,6 @@ public interface TreeMapper {
         return dto;
     }
 
-    // Map from TreeEntity to Tree domain model, handling GeoPointEntity mapping
     default Tree toDomainModel(TreeEntity entity) {
         if (entity == null) {
             return null;
@@ -82,19 +78,7 @@ public interface TreeMapper {
                 entity.getHauteurM(),
                 entity.getStadeDeveloppement(),
                 entity.getRemarquable(),
-                geoPoint  // Map the GeoPoint here
+                geoPoint
         );
-    }
-
-    default List<TreeDTO> toDTOList(List<Tree> trees) {
-        return trees.stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
-    }
-
-    default List<Tree> toDomainModelList(List<TreeEntity> entities) {
-        return entities.stream()
-                .map(this::toDomainModel)
-                .collect(Collectors.toList());
     }
 }

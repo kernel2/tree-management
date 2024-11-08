@@ -4,6 +4,11 @@ public class GeoPointDTO {
     private Double lon;
     private Double lat;
 
+    public GeoPointDTO(Double lon, Double lat) {
+        this.lon = lon;
+        this.lat = lat;
+    }
+
     public Double getLon() {
         return lon;
     }
