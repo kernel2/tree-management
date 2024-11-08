@@ -1,13 +1,12 @@
 package com.planisense.treemanagement.application.services;
 
 import com.planisense.treemanagement.application.dto.ArrondissementTreeCountDTO;
+import com.planisense.treemanagement.application.dto.GenreTreeCountDTO;
 import com.planisense.treemanagement.application.dto.TreeDTO;
-import com.planisense.treemanagement.domain.model.ArrondissementTreeCount;
-import com.planisense.treemanagement.domain.model.PaginatedResult;
-import com.planisense.treemanagement.domain.model.PaginationRequest;
-import com.planisense.treemanagement.domain.model.Tree;
+import com.planisense.treemanagement.domain.model.*;
 import com.planisense.treemanagement.domain.services.TreeServiceImpl;
 import com.planisense.treemanagement.infrastructure.adapters.persistence.ArrondissementTreeCountMapper;
+import com.planisense.treemanagement.infrastructure.adapters.persistence.GenreTreeCountMapper;
 import com.planisense.treemanagement.infrastructure.adapters.persistence.TreeMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,13 @@ public class TreeAppService {
     private final TreeServiceImpl treeService;
     private final TreeMapper treeMapper;
     private final ArrondissementTreeCountMapper arrondissementTreeCountMapper;
+    private final GenreTreeCountMapper genreTreeCountMapper;
 
-    public TreeAppService(TreeServiceImpl treeService, TreeMapper treeMapper, ArrondissementTreeCountMapper arrondissementTreeCountMapper) {
+    public TreeAppService(TreeServiceImpl treeService, TreeMapper treeMapper, ArrondissementTreeCountMapper arrondissementTreeCountMapper, GenreTreeCountMapper genreTreeCountMapper) {
         this.treeService = treeService;
         this.treeMapper = treeMapper;
         this.arrondissementTreeCountMapper = arrondissementTreeCountMapper;
+        this.genreTreeCountMapper = genreTreeCountMapper;
     }
 
     public PaginatedResult<TreeDTO> getAllTreesPaginated(int page, int size) {
@@ -49,6 +50,12 @@ public class TreeAppService {
                 .collect(Collectors.toList());
     }
 
+    public List<GenreTreeCountDTO> getGenreTreeCounts(String genre) {
+        List<GenreTreeCount> counts = treeService.findGenreTreeCounts(genre);
+        return counts.stream()
+                .map(genreTreeCountMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 
 }
 

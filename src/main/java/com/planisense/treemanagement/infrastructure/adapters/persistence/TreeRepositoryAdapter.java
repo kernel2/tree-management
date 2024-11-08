@@ -17,12 +17,10 @@ public class TreeRepositoryAdapter implements TreeRepositoryPort {
 
     private final TreeJpaRepository treeJpaRepository;
     private final TreeMapper treeMapper;
-    private final GenreTreeCountMapper genreTreeCountMapper;
 
-    public TreeRepositoryAdapter(TreeJpaRepository treeJpaRepository, TreeMapper treeMapper, GenreTreeCountMapper genreTreeCountMapper) {
+    public TreeRepositoryAdapter(TreeJpaRepository treeJpaRepository, TreeMapper treeMapper) {
         this.treeJpaRepository = treeJpaRepository;
         this.treeMapper = treeMapper;
-        this.genreTreeCountMapper = genreTreeCountMapper;
     }
 
     @Override
@@ -61,6 +59,23 @@ public class TreeRepositoryAdapter implements TreeRepositoryPort {
 
     @Override
     public List<GenreTreeCount> findGenreTreeCounts(String genre) {
-        return treeJpaRepository.countTreesByGenre(genre).stream().map(genreTreeCountMapper::toEntity).toList();
+        List<Object[]> genreCounts = treeJpaRepository.getGenreWithTreeCount(genre);
+
+        List<TreeEntity> allTrees = treeJpaRepository.findAll();
+        Map<String, List<Tree>> treesByGenre = allTrees.stream()
+                .filter(treeEntity -> treeEntity.getGenre() != null) // Exclude null genres to avoid mapping issues
+                .collect(Collectors.groupingBy(
+                        TreeEntity::getGenre,
+                        Collectors.mapping(treeMapper::toDomainModel, Collectors.toList())
+                ));
+
+        return genreCounts.stream()
+                .map(countResult -> {
+                    String genreName = (String) countResult[0];
+                    Long treeCount = (Long) countResult[1];
+                    List<Tree> trees = treesByGenre.getOrDefault(genreName, List.of());
+                    return new GenreTreeCount(genreName, treeCount, trees);
+                })
+                .collect(Collectors.toList());
     }
 }

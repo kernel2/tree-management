@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "811f81ed-14dc-4391-9822-b67c9f9ecb88",
+		"name": "TreeManagement API",
+		"description": "Collection to test TreeManagement API endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9164201"
+	},
+	"item": [
+		{
+			"name": "Get All Trees",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/trees?page=0&size=100",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"trees"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Compter les arbres par arrondissement",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/trees/arrondissement-count?arrondissement=PARIS 12E ARRDT",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"trees",
+						"arrondissement-count"
+					],
+					"query": [
+						{
+							"key": "arrondissement",
+							"value": "PARIS 12E ARRDT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Compter les arbres par genre",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/trees/genre-count?genre=Tilia",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"trees",
+						"genre-count"
+					],
+					"query": [
+						{
+							"key": "genre",
+							"value": "Tilia"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

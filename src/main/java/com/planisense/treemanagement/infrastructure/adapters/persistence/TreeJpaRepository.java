@@ -22,11 +22,8 @@ public interface TreeJpaRepository extends JpaRepository<TreeEntity, Long> {
     @Query("SELECT te FROM TreeEntity te WHERE (:arrondissement IS NULL OR te.arrondissement = :arrondissement)")
     List<TreeEntity> getTreesGroupedByArrondissement(@Param("arrondissement") String arrondissement);
 
+    @Query("SELECT te.genre, COUNT(te) FROM TreeEntity te WHERE (:genre IS NULL OR te.genre = :genre) GROUP BY te.genre")
+    List<Object[]> getGenreWithTreeCount(@Param("genre") String genre);
 
 
-    @Query("SELECT new com.planisense.treemanagement.application.dto.GenreTreeCountDTO(t.genre, COUNT(t)) " +
-            "FROM TreeEntity t " +
-            "WHERE (:genre IS NULL OR t.genre = :genre) " +
-            "GROUP BY t.genre")
-    List<GenreTreeCountDTO> countTreesByGenre(@Param("genre") String genre);
 }

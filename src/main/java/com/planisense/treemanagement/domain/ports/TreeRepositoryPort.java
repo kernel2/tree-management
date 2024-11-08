@@ -11,5 +11,4 @@ public interface TreeRepositoryPort {
     List<ArrondissementTreeCount> getTreesGroupedByArrondissement(String arrondissement);
 
     List<GenreTreeCount> findGenreTreeCounts(String genre);
-
 }

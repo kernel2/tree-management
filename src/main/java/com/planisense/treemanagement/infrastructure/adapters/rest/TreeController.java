@@ -1,6 +1,7 @@
 package com.planisense.treemanagement.infrastructure.adapters.rest;
 
 import com.planisense.treemanagement.application.dto.ArrondissementTreeCountDTO;
+import com.planisense.treemanagement.application.dto.GenreTreeCountDTO;
 import com.planisense.treemanagement.application.dto.TreeDTO;
 import com.planisense.treemanagement.application.services.TreeAppService;
 import com.planisense.treemanagement.domain.model.PaginatedResult;
@@ -35,5 +36,12 @@ public class TreeController {
             @RequestParam(required = false) String arrondissement) {
         List<ArrondissementTreeCountDTO> arrondissementTreeCounts = treeAppService.getArrondissementTreeCounts(arrondissement);
         return ResponseEntity.ok(arrondissementTreeCounts);
+    }
+
+    @GetMapping("/genre-count")
+    public ResponseEntity<List<GenreTreeCountDTO>> getGenreTreeCounts(
+            @RequestParam(required = false) String genre) {
+        List<GenreTreeCountDTO> genreTreeCounts = treeAppService.getGenreTreeCounts(genre);
+        return ResponseEntity.ok(genreTreeCounts);
     }
 }
