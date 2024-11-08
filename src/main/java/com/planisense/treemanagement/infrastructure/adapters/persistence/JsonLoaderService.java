@@ -29,6 +29,7 @@ public class JsonLoaderService {
     @Async
     @Transactional
     public void loadTreesFromJsonUrl(String url) {
+        long startTime = System.currentTimeMillis();
         try {
             List<TreeEntity> trees = objectMapper.readValue(new URL(url), new TypeReference<List<TreeEntity>>() {
             });
@@ -36,5 +37,8 @@ public class JsonLoaderService {
         } catch (IOException e) {
             throw new JsonParsingException("Erreur de lecture du fichier JSON à partir de l'URL : " + url, e);
         }
+        long endTime = System.currentTimeMillis();
+        System.out.println("Temps d'insertion des données : " + (endTime - startTime) + " ms");
+
     }
 }
